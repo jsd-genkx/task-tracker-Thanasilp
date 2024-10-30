@@ -1,36 +1,43 @@
 import { useState } from "react";
 
 const FormInput = () => {
-  const [inputTask, setInputTask] = useState({
-    id: Date.now(),
-    task: "",
-  });
+  const [inputTask, setInputTask] = useState("");
+  const [tasks, setTasks] = useState([]);
 
-  const handleTask = (e) => {
-    const newTask = e.target.value;
-    console.log("New task:", newTask);
-    setInputTask({
-      ...inputTask,
-      task: e.target.value,
-    });
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    if (inputTask.trim()) {
+      setTasks([...tasks, { id: tasks.length, task: inputTask }]);
+      setInputTask("");
+    }
   };
 
   return (
-    <form
-      action=""
-      className="flex items-center text-xl justify-center p-4 gap-2"
-    >
-      <input
-        type="text"
-        value={inputTask.task}
-        onChange={handleTask}
-        placeholder="Please fill your task"
-        className="border border-slate-600 rounded-md py-1 text-slate-700 pl-2"
-      />
-      <button className=" bg-slate-600 text-white py-1 px-2 rounded-lg">
-        Add Task
-      </button>
-    </form>
+    <>
+      <form
+        action=""
+        className="flex items-center text-xl justify-center p-4 gap-2"
+      >
+        <input
+          type="text"
+          value={inputTask}
+          onChange={(e) => setInputTask(e.target.value)}
+          placeholder="Please fill your task"
+          className="border border-slate-600 rounded-md py-1 text-slate-700 pl-2"
+        />
+        <button
+          onClick={handleAddTask}
+          className=" bg-slate-700 text-white py-1 px-2 rounded-lg font-bold"
+        >
+          Add Task
+        </button>
+        <ul>
+          {tasks.map((task) => (
+            <li key={task.id}>{task.task}</li>
+          ))}
+        </ul>
+      </form>
+    </>
   );
 };
 
